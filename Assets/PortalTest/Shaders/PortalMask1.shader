@@ -10,6 +10,8 @@ Shader "PortalMask1"
         ColorMask 0
         ZWrite On
 
+        ZTest Less
+
         Pass {}
     }
 }

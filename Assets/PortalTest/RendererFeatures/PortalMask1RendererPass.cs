@@ -22,6 +22,7 @@ class PortalMask1RendererPass : ScriptableRenderPass
         if (cam.isActiveAndEnabled)
         {
             CommandBuffer cmd = CommandBufferPool.Get(name: "Portal1RendererPass");
+
             cmd.DrawMesh(_quad,
                 cam.transform.localToWorldMatrix
                 * Matrix4x4.Translate(Vector3.forward * (cam.nearClipPlane * 2))

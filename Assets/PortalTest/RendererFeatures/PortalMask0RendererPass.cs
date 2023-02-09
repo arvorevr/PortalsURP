@@ -28,12 +28,16 @@ class PortalMask0RendererPass : ScriptableRenderPass
         {
             CommandBuffer cmd = CommandBufferPool.Get(name: "Portal0RendererPass");
 
-            cmd.DrawMesh(_quad,
-                cam.transform.localToWorldMatrix
-                * Matrix4x4.Translate(Vector3.forward * (cam.nearClipPlane * 2))
-                , _matDeny, 0, 0);
-
             if (_portal == null) return;
+
+
+            cmd.DrawMesh(_quad,
+               //cam.transform.localToWorldMatrix
+               cam.cameraToWorldMatrix
+               * Matrix4x4.Translate(Vector3.forward * (0.3f * 2))
+                , _matDeny, 0, 0); ;
+
+            
 
             // carve portal
             for (int i = 0; i < _portal.Length; i++)

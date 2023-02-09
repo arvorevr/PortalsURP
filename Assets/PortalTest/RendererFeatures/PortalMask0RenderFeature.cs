@@ -11,17 +11,11 @@ public class PortalMask0RenderFeature : ScriptableRendererFeature
 
     private PortalMask0RendererPass _PortalPass;
 
-    //AddRenderPasses: Unity calls this method every frame, once for each Camera.
-    //This method lets you inject ScriptableRenderPass instances into the scriptable Renderer.
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
             renderer.EnqueuePass(_PortalPass);
     }
 
-    //Create: Unity calls this method on the following events:
-    //When the Renderer Feature loads the first time.
-    //When you enable or disable the Renderer Feature.
-    //When you change a property in the inspector of the Renderer Feature.
     public override void Create()
     {
         if (portal != null && portal.Length == 0)
@@ -35,7 +29,6 @@ public class PortalMask0RenderFeature : ScriptableRendererFeature
         }
 
         _PortalPass = new PortalMask0RendererPass(quad, matAllow, matDeny, portal);
-
         _PortalPass.renderPassEvent = RenderPassEvent.BeforeRenderingOpaques;
     }
 

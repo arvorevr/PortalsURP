@@ -1,4 +1,4 @@
-Shader "PortalMask1"
+Shader "PortalMask"
 {
     Properties{ }
         SubShader

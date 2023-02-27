@@ -1,4 +1,4 @@
-Shader "PortalMask0"
+Shader "DepthMask"
 {
 	Properties{
 		_Depth("Depth", Range(0,1)) = 1

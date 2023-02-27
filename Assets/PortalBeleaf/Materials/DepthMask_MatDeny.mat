@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PortalMask0_MatDeny
+  m_Name: DepthMask_MatDeny
   m_Shader: {fileID: 4800000, guid: d74c3d30e079e8746846dd05135a7fd4, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []

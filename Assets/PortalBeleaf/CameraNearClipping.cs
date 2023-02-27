@@ -4,12 +4,23 @@ using UnityEngine;
 
 public class CameraNearClipping : MonoBehaviour
 {
-    public Camera mainCamera;
     public Camera portalCamera;
     public Transform portalPlane;
+    private Matrix4x4 startProjection;
+
+    private void Start() {
+        startProjection = portalCamera.projectionMatrix;
+    }
 
     private void Update()
     {
+        Plane p = new Plane(-portalPlane.forward, portalPlane.position);
+
+        if (p.GetSide(portalCamera.transform.position)) {
+            portalCamera.projectionMatrix = startProjection;
+            return;
+        }
+
         UpdateProjectionMatrix();
     }
 
@@ -21,14 +32,14 @@ public class CameraNearClipping : MonoBehaviour
 
         Vector4 clipPlaneCameraSpace = Matrix4x4.Transpose(Matrix4x4.Inverse(portalCamera.worldToCameraMatrix)) * clipPlane;
 
-        var newMatrix = mainCamera.CalculateObliqueMatrix(clipPlaneCameraSpace);
+        var newMatrix = portalCamera.CalculateObliqueMatrix(clipPlaneCameraSpace);
 
         portalCamera.projectionMatrix = newMatrix;
         //OnDrawGizmos();
     }
 
-    private void OnDrawGizmos()
-    {
+
+    private void OnDrawGizmos() {
         Vector3[] vertices = new Vector3[4];
         vertices[0] = new Vector3(-10, 10, 0);
         vertices[1] = new Vector3(10, 10, 0);
@@ -49,6 +60,21 @@ public class CameraNearClipping : MonoBehaviour
 
         quad.RecalculateNormals();
 
+        DebugPortalQuad(quad);
+
+        Plane p = new Plane(-portalPlane.forward, portalPlane.position);
+
+        if (p.GetSide(portalCamera.transform.position)) {
+
+            Matrix4x4 matrix = portalCamera.transform.localToWorldMatrix * Matrix4x4.Translate(Vector3.forward);
+            Vector3 pos = matrix.GetColumn(3);
+            Quaternion rotation = Quaternion.LookRotation(matrix.GetColumn(2), matrix.GetColumn(1));
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawWireMesh(quad, pos, rotation);
+        }
+    }
+
+    private void DebugPortalQuad(Mesh quad) {
         Matrix4x4 matrix = portalPlane.localToWorldMatrix * Matrix4x4.Translate(-Vector3.forward * 0.2f);
 
         Vector3 pos = matrix.GetColumn(3);
@@ -57,7 +83,5 @@ public class CameraNearClipping : MonoBehaviour
 
         Gizmos.DrawWireMesh(quad, pos, rotation);
     }
-
-
 }
 

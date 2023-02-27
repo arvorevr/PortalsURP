@@ -24,8 +24,7 @@ class PortalMask0RendererPass : ScriptableRenderPass
 
         cam.RemoveAllCommandBuffers();
 
-        if (cam.isActiveAndEnabled)
-        {
+        if (cam.isActiveAndEnabled) {
             CommandBuffer cmd = CommandBufferPool.Get(name: "Portal0RendererPass");
 
             if (_portal == null || _portal.Length <= 0) return;
@@ -33,10 +32,10 @@ class PortalMask0RendererPass : ScriptableRenderPass
             Transform portalT = _portal[0].transform.parent;
 
             Vector3[] vertices = new Vector3[4];
-            vertices[0] = new Vector3(-10, 10, 0);
-            vertices[1] = new Vector3(10, 10, 0);
-            vertices[2] = new Vector3(10, -10, 0);
-            vertices[3] = new Vector3(-10, -10, 0);
+            vertices[0] = new Vector3(-100, 100, 0);
+            vertices[1] = new Vector3(100, 100, 0);
+            vertices[2] = new Vector3(100, -100, 0);
+            vertices[3] = new Vector3(-100, -100, 0);
 
             int[] triangles = new int[6];
             triangles[0] = 0;
@@ -52,26 +51,26 @@ class PortalMask0RendererPass : ScriptableRenderPass
 
             quad.RecalculateNormals();
 
-            Matrix4x4 matrix = portalT.localToWorldMatrix * Matrix4x4.Translate(-Vector3.forward * 0.2f);
-             cmd.DrawMesh(quad, matrix, _matDeny, 0, 0);
+            Plane pl = new Plane(-portalT.forward, portalT.position);
+            if (pl.GetSide(cam.transform.position)) {
+                cmd.DrawMesh(quad,
+                    cam.transform.localToWorldMatrix * Matrix4x4.Translate(Vector3.forward * 2)
+                 , _matDeny, 0, 0);
+            }
+            else {
 
-            /*ORIGINAL
-             * 
-            cmd.DrawMesh(_quad,
-              cam.transform.localToWorldMatrix * Matrix4x4.Translate(Vector3.forward * (cam.nearClipPlane * 2))
-              , _matDeny, 0, 0);
-            */
+                Matrix4x4 matrix = portalT.localToWorldMatrix * Matrix4x4.Translate(-Vector3.forward * 0.2f);
+                cmd.DrawMesh(quad, matrix, _matDeny, 0, 0);
 
-            // carve portal
-            for (int i = 0; i < _portal.Length; i++)
-            {
-                MeshFilter p = _portal[i];
-                if (p && p.gameObject.activeInHierarchy)
-                {
-                    cmd.DrawMesh(p.mesh, p.transform.localToWorldMatrix, _matAllow);
+
+                // carve portal
+                for (int i = 0; i < _portal.Length; i++) {
+                    MeshFilter p = _portal[i];
+                    if (p && p.gameObject.activeInHierarchy) {
+                        cmd.DrawMesh(p.mesh, p.transform.localToWorldMatrix, _matAllow);
+                    }
                 }
             }
-
             context.ExecuteCommandBuffer(cmd);
             CommandBufferPool.Release(cmd);
         }

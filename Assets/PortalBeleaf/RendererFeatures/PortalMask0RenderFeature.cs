@@ -5,7 +5,6 @@ using System.Linq;
 public class PortalMask0RenderFeature : ScriptableRendererFeature
 {
     private MeshFilter[] portal;
-    public Mesh quad;
     public Material matAllow;
     public Material matDeny;
 
@@ -28,7 +27,7 @@ public class PortalMask0RenderFeature : ScriptableRendererFeature
                 .ToArray();
         }
 
-        _PortalPass = new PortalMask0RendererPass(quad, matAllow, matDeny, portal);
+        _PortalPass = new PortalMask0RendererPass(matAllow, matDeny, portal);
         _PortalPass.renderPassEvent = RenderPassEvent.BeforeRenderingOpaques;
     }
 

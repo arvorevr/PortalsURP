@@ -2,12 +2,12 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine;
 
-class PortalMask0RendererPass : ScriptableRenderPass
+class PortalMaskRendererPass : ScriptableRenderPass
 {
     private Material _matDeny;
     private MeshFilter[] _portal;
     Material _matAllow;
-    public PortalMask0RendererPass(Material matAllow, Material matDeny, MeshFilter[] portal)
+    public PortalMaskRendererPass(Material matAllow, Material matDeny, MeshFilter[] portal)
     {
         _matDeny = matDeny;
         _portal = portal;
@@ -29,11 +29,10 @@ class PortalMask0RendererPass : ScriptableRenderPass
             if (_portal == null || _portal.Length <= 0) return;
 
             Transform portalT = _portal[0].transform.parent;
-
             Mesh quad = CreateQuad();
 
-            Plane pl = new Plane(-portalT.forward, portalT.position);
-            if (pl.GetSide(cam.transform.position))
+            Plane portalPlane = new Plane(-portalT.forward, portalT.position);
+            if (portalPlane.GetSide(cam.transform.position))
             {
                 Matrix4x4 matrix = cam.transform.localToWorldMatrix * Matrix4x4.Translate(Vector3.forward * 2);
                 cmd.DrawMesh(quad, matrix, _matDeny, 0, 0);

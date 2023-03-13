@@ -6,10 +6,8 @@ Shader "DepthMask"
 		SubShader
 	{
 		Tags { "RenderType" = "Opaque" }
-		LOD 100
 		Cull Off
 		ZTest Always
-		ColorMask 0
 
 		Pass {
 
@@ -46,11 +44,7 @@ Shader "DepthMask"
 			fragOut frag(v2f i)
 			{
 				fragOut o;
-#if SHADER_API_D3D11 || SHADER_API_D3D9 || SHADER_API_D3D11_9X
-				o.depth = 1 - _Depth;
-#else
-				o.depth = _Depth;
-#endif
+				o.depth = 1 -_Depth;
 				return o;
 			}
 			ENDCG

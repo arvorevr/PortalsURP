@@ -27,15 +27,12 @@ public class CameraNearClipping : MonoBehaviour
     private void UpdateProjectionMatrix()
     {
         Plane p = new Plane(-portalPlane.forward, portalPlane.position);
-
         Vector4 clipPlane = new Vector4(p.normal.x, p.normal.y, p.normal.z, p.distance);
 
         Vector4 clipPlaneCameraSpace = Matrix4x4.Transpose(Matrix4x4.Inverse(portalCamera.worldToCameraMatrix)) * clipPlane;
 
         var newMatrix = portalCamera.CalculateObliqueMatrix(clipPlaneCameraSpace);
-
         portalCamera.projectionMatrix = newMatrix;
-        //OnDrawGizmos();
     }
 
 

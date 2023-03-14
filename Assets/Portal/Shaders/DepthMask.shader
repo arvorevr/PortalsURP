@@ -44,7 +44,7 @@ Shader "DepthMask"
 			fragOut frag(v2f i)
 			{
 				fragOut o;
-				o.depth = 1 -_Depth;
+				o.depth = _Depth;
 				return o;
 			}
 			ENDCG

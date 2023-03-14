@@ -34,14 +34,13 @@ class PortalMaskRendererPass : ScriptableRenderPass
             Plane portalPlane = new Plane(-portalT.forward, portalT.position);
             if (portalPlane.GetSide(cam.transform.position))
             {
-                Matrix4x4 matrix = cam.transform.localToWorldMatrix * Matrix4x4.Translate(Vector3.forward * 2);
+                Matrix4x4 matrix = cam.transform.localToWorldMatrix * Matrix4x4.Translate(Vector3.forward * 2f);
                 cmd.DrawMesh(quad, matrix, _matDeny, 0, 0);
             }
             else
             {
-                Matrix4x4 matrix = portalT.localToWorldMatrix * Matrix4x4.Translate(-Vector3.forward * 0.2f);
+                Matrix4x4 matrix = portalT.localToWorldMatrix * Matrix4x4.Translate(-Vector3.forward * 0.1f);
                 cmd.DrawMesh(quad, matrix, _matDeny, 0, 0);
-
 
                 // carve portal
                 for (int i = 0; i < _portal.Length; i++)
